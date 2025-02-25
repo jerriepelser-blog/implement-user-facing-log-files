@@ -1,0 +1,28 @@
+﻿@page "{id:guid}"
+@model ImplementUserFacingLogFiles.Pages.Jobs.IndexModel
+@{
+    ViewData["Title"] = "Job details";
+}
+
+@if (Model.JobDetail?.LogEntries.Count > 0)
+{
+    <div class="text-bg-dark font-monospace p-2">
+        @foreach (var logEntry in Model.JobDetail.LogEntries)
+        {
+            var cssClass = logEntry.Level switch
+            {
+                "ERR" => "text-danger",
+                "WRN" => "text-warning",
+                _ => null
+            };
+            
+            <div>
+                @if (logEntry.Time.HasValue)
+                {
+                    <span>[@logEntry.Time.Value.ToString("HH:mm:ss")]</span>
+                }
+                <span class="@cssClass">@logEntry.Text</span>
+            </div>
+        }
+    </div>
+}

@@ -1,0 +1,48 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center mb-3">
+    <h1 class="h5">Run one of the background job simulations below</h1>
+</div>
+<div class="mb-3">
+    <form class="d-flex justify-content-center gap-3" method="post">
+        <button class="btn btn-primary" asp-page-handler="Normal">Sample job</button>
+        <button class="btn btn-warning" asp-page-handler="WithWarnings">Sample job with warnings</button>
+        <button class="btn btn-danger" asp-page-handler="WithErrors">Sample job with errors</button>
+    </form>
+</div>
+@if (Model.Jobs?.Count > 0)
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Job ID</th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var job in Model.Jobs)
+        {
+            <tr>
+                <td>
+                    Job: @job.Id.ToString("N")
+                    @if (job.HasErrors)
+                    {
+                        <span class="ml-2 badge text-bg-danger">Has errors</span>
+                    } else if (job.HasWarnings)
+                    {
+                        <span class="ml-2 badge text-bg-warning">Has warnings</span>
+                    }
+                </td>
+                <td>
+                    <a asp-page="/Jobs/Index" asp-route-id="@job.Id">View</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+    </table>
+    
+}
